@@ -1,0 +1,99 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-checkout
+  namespace: otel-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-checkoutservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-checkoutservice-cpu
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-checkoutservice-cpu
+        target:
+          type: Value
+          value: "160"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-frontend
+  namespace: otel-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-frontend
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-frontend-cpu
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-frontend-cpu
+        target:
+          type: Value
+          value: "160"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-productcalalog
+  namespace: otel-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-productcatalogservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-productcatalogservice-cpu
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-productcatalogservice-cpu
+        target:
+          type: Value
+          value: "160"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-cartservice
+  namespace: otel-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-cartservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-cartservice-cpu
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-cartservice-cpu
+        target:
+          type: Value
+          value: "160"

@@ -1,0 +1,50 @@
+apiVersion: metrics.keptn.sh/v1alpha3
+kind: KeptnMetric
+metadata:
+  name: keptnmetric-checkoutservice-cpu
+  namespace: otel-demo
+spec:
+  provider:
+    name: "dynatrace"
+
+  query: "(builtin:kubernetes.workload.cpu_usage:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-checkoutservice)))):splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum/builtin:kubernetes.workload.requests_cpu:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-checkoutservice))))
+  :splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum):default(0.0)*(100.0):setUnit(Percent)"
+  fetchIntervalSeconds: 5
+---
+apiVersion: metrics.keptn.sh/v1alpha3
+kind: KeptnMetric
+metadata:
+  name: keptnmetric-frontend-cpu
+  namespace: otel-demo
+spec:
+  provider:
+    name: "dynatrace"
+  query: "(builtin:kubernetes.workload.cpu_usage:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-frontend)))):splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum/builtin:kubernetes.workload.requests_cpu:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-frontend))))
+  :splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum):default(0.0)*(100.0):setUnit(Percent)"
+  fetchIntervalSeconds: 5
+---
+apiVersion: metrics.keptn.sh/v1alpha3
+kind: KeptnMetric
+metadata:
+  name: keptnmetric-cartservice-cpu
+  namespace: otel-demo
+spec:
+  provider:
+    name: "dynatrace"
+  query: "(builtin:kubernetes.workload.cpu_usage:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-cartservice)))):splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum/builtin:kubernetes.workload.requests_cpu:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-cartservice))))
+ :splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum):default(0.0)*(100.0):setUnit(Percent)"
+  fetchIntervalSeconds: 5
+---
+apiVersion: metrics.keptn.sh/v1alpha3
+kind: KeptnMetric
+metadata:
+  name: keptnmetric-productcatalogservice-cpu
+  namespace: otel-demo
+spec:
+  provider:
+    name: "dynatrace"
+  query: "(builtin:kubernetes.workload.cpu_usage:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-productcatalogservice)))):splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum/builtin:kubernetes.workload.requests_cpu:filter(and(or(eq(\"k8s.namespace.name\",otel-demo)),or(eq(\"k8s.deployment.name\",opentelemetry-demo-productcatalogservice))))
+  :splitBy(\"k8s.namespace.name\",\"k8s.workload.kind\",\"k8s.workload.name\"):sum):default(0.0)*(100.0):setUnit(Percent)"
+  fetchIntervalSeconds: 5
+
+

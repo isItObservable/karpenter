@@ -1,0 +1,149 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-checkout
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: checkoutservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-checkoutservice-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-checkoutservice-thrott
+        target:
+          type: Value
+          value: "120"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-frontend
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-frontend-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-frontend-thrott
+        target:
+          type: Value
+          value: "120"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-recommendation
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recommendationservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-recommendationservice-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-recommendationservice-thrott
+        target:
+          type: Value
+          value: "120"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-productcalalog
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: productcatalogservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-productcatalogservice-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-productcatalogservice-thrott
+        target:
+          type: Value
+          value: "120"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-cartservice
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cartservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-cartservice-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-cartservice-thrott
+        target:
+          type: Value
+          value: "120"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-paymentservice
+  namespace: hipster-shop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: paymentservice
+  minReplicas: 1
+  maxReplicas: 15
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: keptnmetric-paymentservice-thrott
+        describedObject:
+          apiVersion: metrics.keptn.sh/v1alpha1
+          kind: KeptnMetric
+          name: keptnmetric-paymentservice-thrott
+        target:
+          type: Value
+          value: "120"

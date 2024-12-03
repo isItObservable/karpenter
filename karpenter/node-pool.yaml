@@ -1,0 +1,118 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  amiFamily: AL2 # Amazon Linux 2
+  role: "KarpenterNodeRole-CLUSTER_NAME_TO_REPLACE" # replace with your cluster name
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "CLUSTER_NAME_TO_REPLACE" # replace with your cluster name
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "CLUSTER_NAME_TO_REPLACE" # replace with your cluster name
+  amiSelectorTerms:
+    - id: "ARM_AMI_ID_TO_REPLACE"
+    - id: "AMD_AMI_ID_TO_REPLACE"
+  tags:
+    owner: OWNER_TO_REPLACE
+    owner-email: OWNER_EMAIL_TO_REPLACE
+---
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: default
+spec:
+  template:
+      metadata:
+        # Labels are arbitrary key-values that are applied to all nodes
+        labels:
+          type: operation
+      spec:
+        requirements:
+          - key: kubernetes.io/arch
+            operator: In
+            values: ["amd64"]
+          - key: kubernetes.io/os
+            operator: In
+            values: ["linux"]
+          - key: karpenter.sh/capacity-type
+            operator: In
+            values: ["on-demand"]
+          - key: "karpenter.k8s.aws/instance-family"
+            operator: In
+            values: [ "m5","m5d","c5","c5d","c4","r4" ]
+            minValues: 1
+          - key: "karpenter.k8s.aws/instance-cpu"
+            operator: In
+            values: [  "16", "32" ]
+          - key: user.defined.label/type
+            operator: Exists
+        nodeClassRef:
+          group: karpenter.k8s.aws
+          kind: EC2NodeClass
+          name: default
+        expireAfter: 72h # 30 * 24h = 720h
+  limits:
+    cpu: 1000
+
+
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 1m
+    budgets:
+      - nodes: "20%"
+        reasons:
+          - "Empty"
+          - "Drifted"
+          - "Underutilized"
+---
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: application
+spec:
+  template:
+      metadata:
+        # Labels are arbitrary key-values that are applied to all nodes
+        labels:
+          type: app
+      spec:
+        requirements:
+          - key: kubernetes.io/arch
+            operator: In
+            values: ["amd64"]
+          - key: kubernetes.io/os
+            operator: In
+            values: ["linux"]
+          - key: karpenter.sh/capacity-type
+            operator: In
+            values: ["spot"]
+          - key: "karpenter.k8s.aws/instance-cpu"
+            operator: In
+            values: [ "8","16", "32" ]
+          - key: user.defined.label/type
+            operator: Exists
+        nodeClassRef:
+          group: karpenter.k8s.aws
+          kind: EC2NodeClass
+          name: default
+        expireAfter: 72h # 30 * 24h = 720h
+  limits:
+    cpu: 1000
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 1m
+    budgets:
+      - nodes: "20%"
+        reasons:
+          - "Empty"
+          - "Drifted"
+          - "Underutilized"
+      - nodes: "0"
+        schedule: "@daily"
+        duration: 10m
+        reasons:
+          - "Underutilized"
+---
+
